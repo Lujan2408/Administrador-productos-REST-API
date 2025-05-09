@@ -46,6 +46,7 @@ export const getProductById = async (req : Request, res : Response) => {
   }
 }
 
+// Actualizar producto
 export const updateProduct = async (req : Request, res : Response) => {
   const { productId } = req.params
     const product = await Product.findByPk(productId)
@@ -62,4 +63,22 @@ export const updateProduct = async (req : Request, res : Response) => {
     
     res.json({data: product})
 
+}
+
+// Modificar productos
+export const updateAvailability = async (req : Request, res : Response) => {
+   const { productId } = req.params
+    const product = await Product.findByPk(productId)
+
+    if(!product) {
+      return res.status(404).json({
+        error: "Producto no encontrado"
+      })
+    }
+
+    //Modificar
+    product.availability = !product.dataValues.availability //Modificamos directamente el valor  
+    await product.save()
+     
+    res.json({data: product})
 }
